@@ -25,7 +25,7 @@ pipeline {
  parallel(
  'Quality Check':{
  echo 'QA verified'
- }
+ },
  'Security Check':{
  dependencyCheck additionalArguments: '--scan=. --format=HTML', odcInstallation: 'OWASP-Dependency-Check'
  echo 'All security checks done'
