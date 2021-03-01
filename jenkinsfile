@@ -22,16 +22,20 @@ pipeline {
         }
         stage('Quality Check') {
             steps {
-                echo 'QA verified'
-            }
+ parallel(
+ 'Quality Check':{
+ echo 'QA verified'
+ }
+ 'Security Check':{
+ dependencyCheck additionalArguments: '--scan=. --format=HTML', odcInstallation: 'OWASP-Dependency-Check'
+ echo 'All security checks done'
+ }
+ 
+)
+ 
+}
         }
-        stage('Security Check') {
-            steps {
-                dependencyCheck additionalArguments: '--scan=. --format=HTML', odcInstallation: 'OWASP-Dependency-Check'
-                echo 'All security checks done'
-            }
-        }
-        stage('Build Push App') {
+              stage('Build Push App') {
             steps {
                 sh "mvn clean install"
             }
@@ -58,3 +62,4 @@ pipeline {
         }
     }
 }
+
